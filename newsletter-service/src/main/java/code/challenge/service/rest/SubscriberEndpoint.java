@@ -32,8 +32,6 @@ public class SubscriberEndpoint {
 	@POST
 	public Response create(@HeaderParam("X-My-API-Key-Token") String apikeytoken , final Subscriber subscriber) {
 		
-		System.out.println("apikeytoken: " + apikeytoken);
-		System.out.println("subscriber: " + subscriber);
 		if (isValidToken(apikeytoken)) {
 			SubscriberDao dao = new SubscriberDao();
 			Subscriber subscriberPersisted = dao.create(subscriber, (short) 1, (short) 1);
