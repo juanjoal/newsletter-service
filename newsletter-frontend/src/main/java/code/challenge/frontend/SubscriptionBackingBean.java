@@ -1,4 +1,4 @@
-package code.challenge.fontend;
+package code.challenge.frontend;
 
 import java.io.Serializable;
 
