@@ -43,11 +43,13 @@ public class SubscriberDao {
 				insertSubscriptor.setShort(5, idNewsletter);
 				insertSubscriptor.setShort(6, idCampaing);
 				insertSubscriptor.registerOutParameter(7, Types.SMALLINT);
+				
 				boolean resultado = insertSubscriptor.execute();
+				
 				outputValue = insertSubscriptor.getShort(7);
 				subscriber.setId(outputValue);
-				System.out.println("outputValue: " + outputValue);
-				System.out.println("resultado: " + resultado);
+				logger.debug("outputValue: " + outputValue);
+				logger.debug("resultado: " + resultado);
 			}catch (SQLException e) {
 				logger.error("", e);
 			}
