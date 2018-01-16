@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"> 
+
+<h:head></h:head> 
+<body> 
+	<h:form>
+	
+	<div class="ui-fluid">
+		<p:messages/>
+	    <p:panelGrid columns="2" columnClasses="ui-grid-col-2,ui-grid-col-10" layout="grid" styleClass="ui-panelgrid-blank">
+	        <p:outputLabel for="email" value="Email"/>
+	        <p:inputText id="email" value="#{subscriptionBackingBean.subscriber.email}" required="true"/>
+	        
+	        <p:outputLabel for="firstName" value="firstname"/>
+	        <p:inputText id="firstName" value="#{subscriptionBackingBean.subscriber.firstname}" />
+	        
+			<p:outputLabel for="gender" value="Gender"/>
+	        <p:selectOneMenu  id="gender" value="#{subscriptionBackingBean.subscriber.gender}">
+	        	<f:selectItem itemLabel="Select One" itemValue="" />
+        		<f:selectItem itemLabel="Male" itemValue="M" />
+        		<f:selectItem itemLabel="Female" itemValue="F" />
+        		
+    		</p:selectOneMenu>
+ 
+	        
+
+	 		<p:outputLabel for="dateOfBirth" value="Date of birth"/>
+	        <p:calendar showOn="button" pattern="dd-MM-yyyy" mask="true" id="dateOfBirth" 
+	        value="#{subscriptionBackingBean.subscriber.dateOfBirth}" required="true"/>
+	 
+	 		<p:outputLabel for="consent" value="I agree with the terms and conditions"/>
+	 		<p:selectBooleanCheckbox id="consent" value="#{subscriptionBackingBean.subscriber.gender}" />
+
+	 
+       </p:panelGrid>
+	</div>
+	
+	
+	<br/>
+	
+	<p:commandButton validateClient="true" action="#{subscriptionBackingBean.subscribe()}" value="enviar" />
+	
+	</h:form>
+</body> 
+</html>
