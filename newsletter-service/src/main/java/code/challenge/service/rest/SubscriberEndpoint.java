@@ -30,11 +30,22 @@ public class SubscriberEndpoint {
 	* @return
 	*/
 	@POST
-	public Response create(@HeaderParam("X-My-API-Key-Token") String apikeytoken , final Subscriber subscriber) {
+	public Response create(@HeaderParam("X-API-Key-Token") String apikeytoken , final Subscriber subscriber) {
 		
+
 		if (isValidToken(apikeytoken)) {
 			SubscriberDao dao = new SubscriberDao();
 			Subscriber subscriberPersisted = dao.create(subscriber, (short) 1, (short) 1);
+			if (subscriberPersisted != null && subscriberPersisted.getId() == -1) {
+				this.sendEmail(subscriberPersisted);
+				this.sendEvent(subscriberPersisted);
+			
+			}else {
+				return Response.status(Response.Status.CONFLICT)
+				        .type(MediaType.TEXT_PLAIN_TYPE)
+				        .entity("email duplicated")
+				        .build();
+			}
 			return Response.ok(subscriberPersisted).build();
 		}else {
 			return Response.status(Response.Status.UNAUTHORIZED)
@@ -59,6 +70,49 @@ public class SubscriberEndpoint {
 			return false;
 		}
 		
+	}
+	
+	/**
+	 * mock
+	 * @param subscriber
+	 */
+	private void sendEmail(final Subscriber subscriber) {
+	
+		/**
+		 * 	this call must be asynchronous given the two SLA
+		 * this service SLA 300ms
+		 * email service SLA 2 secconds
+		 * 
+		 * option 1 
+		 * 
+		 * client.target(REST_SERVICE_URL)
+			.request()
+			.async()
+			.post(Entity.entity(subscriber, MediaType.APPLICATION_JSON),
+					new InvocationCallback<Subscriber>() {
+						@Override
+						public void completed(final Book bookPersisted) {
+							//ok
+						}
+ 
+						@Override
+						public void failed(final Throwable throwable) {
+							//retry or backlog of failed for batch processing
+						}
+					}).get();
+					
+			option 2: send to queue
+		 * 
+		 * 
+		 */
+	}
+	
+	/**
+	 * mock
+	 * @param subscriber
+	 */
+	private void sendEvent(final Subscriber subscriber) {
+		// sync call
 	}
 
 }
